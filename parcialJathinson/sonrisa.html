@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Formulario y Recepción de Datos</title>
+    <style>
+        /* Estilos para la tabla */
+        table {
+            max-width: 400px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            margin: 2px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Ejemplo</h1>
+    <table id="tablaDatos">
+        <tbody>
+            <tr>
+                <td><strong>Nombre:</strong> <span id="nombreRecibido"></span></td>
+            </tr>
+            <tr>
+                <td><strong>Email:</strong> <span id="emailRecibido"></span></td>
+            </tr>
+            <tr>
+                <td><strong>Número de Teléfono:</strong> <span id="telefonoRecibido"></span></td>
+            </tr>
+            <tr>
+                <td><strong>Gusto:</strong> <span id="gustoRecibido"></span></td>
+            </tr>
+            <tr>
+                <td><strong>Porcentaje:</strong> <span id="porcentajeRecibido"></span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // Obtener los parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const nombre = urlParams.get('nombre');
+        const email = urlParams.get('email');
+        const numerotelefono = urlParams.get('numerotelefono');
+        const stringColumna2 = urlParams.get('stringColumna2');
+        const stringColumna3 = urlParams.get('stringColumna3');
+
+        // Llenar la tabla con los valores recibidos
+        document.getElementById('nombreRecibido').textContent = nombre;
+        document.getElementById('emailRecibido').textContent = email;
+        document.getElementById('telefonoRecibido').textContent = numerotelefono;
+        document.getElementById('gustoRecibido').textContent = stringColumna2;
+        document.getElementById('porcentajeRecibido').textContent = stringColumna3;
+    </script>
+</body>
+</html>

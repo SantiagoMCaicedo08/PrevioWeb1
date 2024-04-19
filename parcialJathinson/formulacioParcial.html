@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Afiliación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        i {
+            border: 1px solid #ccc;
+            padding: 9px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            margin: 2px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .expandable-row {
+            display: none;
+        }
+
+        .expanded {
+            display: table-row;
+        }
+
+        /* Estilo para el texto "Editar" en azul */
+        .edit-text {
+            color: blue;
+            cursor: pointer;
+        }
+
+        .editartexto p{
+            color: gray;
+        }
+        
+        .gusto {
+            border: 1px solid rgb(18, 163, 18);
+            padding: 10px 0 10px 0;
+            background-color: white;
+            border-bottom-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .flag {
+        background-color: green;
+        color: white;
+        padding: 10px 10px;
+        border-radius: 5px;
+        margin-left: 10px;
+        }
+        
+        .caja {
+            border: 1px solid rgb(18, 163, 18);
+            padding: 10px;
+        }
+        /* Estilo para el texto "En edición" en gris */
+        .trans {
+            border: transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebDeveloper</h1>
+    
+
+    <form action="sonrisa.html" method="get" onsubmit="return validateAll()">
+        <h2>Formulario de Afiliación</h2>
+        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre completo" required>
+        <i class="fas fa-user"></i> 
+        <input type="email" id="email" name="email" placeholder="Ingresa tu dirección de correo electrónico" required>
+        <i class="far fa-envelope"></i>
+        <!-- El tercer campo no tiene una etiqueta visible, pero tiene un marcador de posición "text" -->
+        <input type="text" id="numerotelefono" name="numerotelefono" placeholder="Texto" required>
+        <i class="fas fa-phone"></i>
+
+        <!-- Agrega aquí más campos según tus necesidades -->
+
+    
+        <input type="text" id="nuevoGusto" placeholder="Nuevo gusto">
+        <button class="gusto" type="button" onclick="agregarGusto()">Gustos</button>
+
+        <div class="caja">
+            <table id="tabla">
+                <thead>
+                    <tr>
+                        <th><span class="flag"><i class="far fa-flag trans"></i></span></th>
+                        <th>Gustos</th>
+                        <th>%</th>
+                        <th>Editar</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaGustos">
+                    <!-- Filas de gustos se agregarán aquí -->
+                </tbody>
+            </table>
+        </div>
+        
+
+        <div class="editartexto" id="botonesEdicion" style="display: none;">
+            <p>Pulse Aceptar para guardar los cambios o
+                cancelar para anularlos</p>
+            <button onclick="aceptarCambios()">Aceptar</button>
+            <button onclick="rechazarCambios()">Cancelar</button>
+        </div>
+
+        <input type="hidden" id="stringColumna2" name="stringColumna2">
+        <input type="hidden" id="stringColumna3" name="stringColumna3">
+
+        <br>
+        <button type="submit">Enviar</button>
+
+    </form>
+    
+
+    <script>
+        function agregarGusto() {
+            const nuevoGusto = document.getElementById('nuevoGusto').value;
+            if (nuevoGusto) {
+                const newRow = document.createElement('tr');
+                newRow.classList.add('expanded');
+                newRow.innerHTML = `
+                    <td><span class="flag"><i class="far fa-flag trans"></td>
+                    <td contenteditable="false">${nuevoGusto}</td>
+                    <td contenteditable="false">0%</td>
+                    <td class="edit-text">Editar</td>
+                `;
+                document.getElementById('tablaGustos').appendChild(newRow);
+                document.getElementById('nuevoGusto').value = '';
+            }
+        }
+
+        var valor = '0%';
+        var valor2 = '';
+        var contador = 0;
+        document.addEventListener('click', (event) => {
+            if(event.target.textContent === 'Editar') {
+                contador = contador + 1;
+                if(contador > 1){
+                    alert("solo se puede hacer una modificacion a la vez");
+                    contador = contador - 1;
+                }
+                else if(contador <=1){
+                    const fila = event.target.closest('tr');
+                    fila.classList.add('editing');
+                    fila.querySelector('td:nth-child(4)').textContent = 'En edición';
+                    fila.querySelector('td:nth-child(2)').contentEditable = 'true';
+                    fila.querySelector('td:nth-child(3)').contentEditable = 'true';
+                    fila.querySelector('td:nth-child(4)').style = 'color: gray';
+                    valor = fila.querySelector('td:nth-child(3)').textContent;
+                    valor2 = fila.querySelector('td:nth-child(2)').textContent;
+                    document.getElementById('botonesEdicion').style.display = 'block';
+                }
+                
+            }
+        });
+
+        function aceptarCambios() {
+            contador = contador - 1;
+            const filas = document.querySelectorAll('.expanded');
+            filas.forEach((fila) => {
+                if (fila.classList.contains('editing')) {
+                    const porcentaje = fila.querySelector('td:nth-child(3)').textContent;
+                    const nuevoPorcentaje = porcentaje.trim();
+                    fila.querySelector('td:nth-child(3)').textContent = nuevoPorcentaje;
+                    fila.querySelector('td:nth-child(4)').textContent = 'Editar';
+                    fila.querySelector('td:nth-child(4)').style = 'color: blue';
+                    fila.classList.remove('editing');
+                    fila.querySelector('td:nth-child(2)').contentEditable = 'false';
+                    fila.querySelector('td:nth-child(3)').contentEditable = 'false';
+                }
+            });
+            document.getElementById('botonesEdicion').style.display = 'none';
+        }
+
+        function rechazarCambios() {
+            contador = contador - 1;
+            const filas = document.querySelectorAll('.expanded');
+            filas.forEach((fila) => {
+                if (fila.classList.contains('editing')) {
+                fila.querySelector('td:nth-child(2)').textContent = valor2;
+                fila.querySelector('td:nth-child(3)').textContent = valor;
+                fila.querySelector('td:nth-child(4)').textContent = 'Editar';
+                fila.querySelector('td:nth-child(4)').style = 'color: blue';
+                fila.classList.remove('editing');
+                fila.querySelector('td:nth-child(2)').contentEditable = 'false';
+                fila.querySelector('td:nth-child(3)').contentEditable = 'false';
+                }
+            });
+            document.getElementById('botonesEdicion').style.display = 'none';
+        }
+
+        function validateAll(){
+
+        // Obtener los valores de la segunda columna (Nombre) y tercera columna (Email)
+        const filas = document.querySelectorAll('#tabla tbody tr');
+        const valoresColumna2 = Array.from(filas, fila => fila.children[1].textContent).join(',');
+        const valoresColumna3 = Array.from(filas, fila => fila.children[2].textContent).join(',');
+
+
+        // Asignar los valores a los campos ocultos
+        document.getElementById('stringColumna2').value = valoresColumna2;
+        document.getElementById('stringColumna3').value = valoresColumna3;
+
+
+        document.getElementById('minvalue').value = min_value;
+        document.getElementById('maxvalue').value = max_value;
+        return true;
+        }
+        
+
+
+    </script>
+
+    <!-- Agrega aquí otros elementos o enlaces según tu diseño -->
+    <p>Ir al sitio web de P web</p>
+
+    
+    
+</body>
+</html>
